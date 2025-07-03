@@ -1,0 +1,57 @@
+body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #222;
+    }
+
+#viewport {
+  width: 800px;  /* taille visible (10 cases de 40px) */
+  height: 800px;
+  border: 2px solid #ccc;
+  overflow: hidden;        /* cache les barres */
+  position: relative;
+}
+
+#game {
+    display: grid;
+    grid-template-columns: repeat(100, 40px);
+    grid-template-rows: repeat(100, 40px);
+    gap: 2px;
+    position: absolute;      /* permet de le déplacer avec JS */
+    top: 0;
+    left: 0;
+  }
+
+.cell {
+  width: 40px;
+  height: 40px;
+  background-color: #444;
+}
+  
+.ground{
+  width: 40px;
+  height: 40px;
+  background-color: rgb(255, 0, 0);
+}
+
+.player {
+  background-image: url("./img/blueCube.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.player.rotate-2 {
+  transform: rotate(90deg);
+  transition: transform 0s;
+}
+.player.rotate-3 {
+  transform: rotate(180deg);
+  transition: transform 0s;
+}
+.player.rotate-4 {
+  transform: rotate(270deg);
+  transition: transform 0s;
+}
