@@ -1,9 +1,9 @@
 const game = document.getElementById("game");
-const size = 100;
+const size = 50;
 const cells = [];
 
 let playerX = 0;
-let playerY = 49;
+let playerY = 24;
 
 let rotation = 1
 
@@ -18,7 +18,7 @@ const startGame = () => {
     const line = [];
         for (let x = 0; x < size; x++) {
             const cell = document.createElement("div");
-            if (y === 50 || (y === 49 && x%5==0 && x!=0)) {
+            if (y === 25 || (y === 24 && x%5==0 && x!=0)) {
                 cell.classList.add("ground");
             } else {
                 cell.classList.add("cell");
