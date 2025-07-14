@@ -149,3 +149,15 @@ const changeLeftRotation = () => {
         rotation = 4
     }
 }
+
+const data = [];
+
+for (let i = 0; i < 100; i++) {
+  const sublist = [];
+  for (let j = 0; j < 100; j++) {
+    sublist.push([i, j]); // ou tu peux remplacer par d'autres valeurs aléatoires ou personnalisées
+  }
+  data.push(sublist);
+}
+
+console.log(data);
