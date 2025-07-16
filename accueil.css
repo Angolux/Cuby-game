@@ -1,15 +1,31 @@
 body{
     font-family: Arial, Helvetica, sans-serif;
+    background-image: url('./img/space.webp');
+    background-repeat: repeat-x;
+    background-size: cover;
+    background-position: 0 0;
+    animation: scroll-background 60s linear infinite;
+    margin: 0;
+    color: white;
+}
+
+@keyframes scroll-background {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -1000px 0; /* Ajuste selon la taille de l’image */
+    }
 }
 
 header{
+    margin-top: 2%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 main{
-    color: white;
     display: flex;
     background-color: rgb(110, 129, 214);
     justify-content: center;
@@ -39,4 +55,15 @@ li{
 
 #choose-container:hover li {
     display: block;
+}
+a:hover h2{
+  color: #000000;
+}
+
+h2:hover {
+    color: #000000;
+}
+
+li:hover a{
+    color: #000000;
 }

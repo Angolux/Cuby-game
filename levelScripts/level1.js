@@ -18,7 +18,12 @@ const startGame = () => {
     const line = [];
         for (let x = 0; x < size; x++) {
             const cell = document.createElement("div");
-            if (y === 25 || (y === 24 && x%5==0 && x!=0)) {
+            if(y === 24 && x ===0){
+                cell.classList.add("start");
+            } else if(y===24 && x===49){
+                cell.classList.add("end");
+            }
+            else if (y === 25 || (y === 24 && x!=0 && x%5==0)) {
                 cell.classList.add("ground");
             } else {
                 cell.classList.add("cell");
@@ -150,14 +155,4 @@ const changeLeftRotation = () => {
     }
 }
 
-const data = [];
-
-for (let i = 0; i < 100; i++) {
-  const sublist = [];
-  for (let j = 0; j < 100; j++) {
-    sublist.push([i, j]); // ou tu peux remplacer par d'autres valeurs aléatoires ou personnalisées
-  }
-  data.push(sublist);
-}
-
-console.log(data);
+startTimer();
