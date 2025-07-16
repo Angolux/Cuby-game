@@ -154,5 +154,3 @@ const changeLeftRotation = () => {
         rotation = 4
     }
 }
-
-startTimer();
