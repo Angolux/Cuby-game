@@ -9,9 +9,13 @@ let rotation = 1
 
 let canMove = true;
 let isJumping = false;
+let go = false;
+let finish = false;
+let dead = false;
 
 const moveDelay = 100;
 const jumpDelay = 300;
+const fallDelay = 50;
 
 const getCellColor = (x,y) => {
     const cell = cells[y][x];
@@ -20,6 +24,9 @@ const getCellColor = (x,y) => {
 }
 
 const update = (rotation) => {
+    if(playerX === 49 && playerY === 24){
+        stopTimer();
+    }
     const currentColor = getCellColor(playerX, playerY);
     if(currentColor !== "rgb(255, 0, 0)"){
         for (let y = 0; y < size; y++) {
@@ -52,6 +59,11 @@ const update = (rotation) => {
 
 document.addEventListener("keydown", function (e) {
     const key = e.key.toLowerCase();
+    if(!go){
+        go = true;
+        startTimer();
+        document.getElementById("chronometer-container").style.display = "flex";
+    }
     if (key === "z" && playerY > 0 && !isJumping) {
         const aboveColor = getCellColor(playerX, playerY - 1);
         if (aboveColor !== "rgb(255, 0, 0)") {
@@ -83,26 +95,14 @@ document.addEventListener("keydown", function (e) {
         if (leftColor !== "rgb(255, 0, 0)") {
             playerX--;
             changeLeftRotation();
-            let nextColor = getCellColor(playerX, playerY + 1);
-            if (nextColor !== "rgb(255, 0, 0)") {
-                setTimeout(() => {
-                    playerY++;
-                    update(rotation);
-                }, moveDelay);
-            }
+            fall();
         }
     } else if (key === "d" && playerX < size - 1) {
         const rightColor = getCellColor(playerX + 1, playerY);
         if (rightColor !== "rgb(255, 0, 0)") {
             playerX++;
             changeRightRotation();
-            let nextColor = getCellColor(playerX, playerY + 1);
-            if (nextColor !== "rgb(255, 0, 0)") {
-                setTimeout(() => {
-                    playerY++;
-                    update(rotation);
-                }, moveDelay);
-            }
+            fall();
         }
     }
 
@@ -112,6 +112,18 @@ document.addEventListener("keydown", function (e) {
         canMove = true;
     }, moveDelay);
 });
+
+const fall = () => {
+    const nextColor = getCellColor(playerX, playerY + 1);
+    if (nextColor !== "rgb(255, 0, 0)") {
+        setTimeout(() => {
+            playerY++;
+            update(rotation);
+            fall();
+        }, fallDelay);
+    }
+};
+
 
 const changeRightRotation = () => {
     if(rotation<4){

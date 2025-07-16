@@ -9,6 +9,7 @@ body {
     }
 
 #viewport {
+  z-index: 1  ;
   width: 800px;
   height: 800px;
   border: 2px solid #ccc;
@@ -50,6 +51,13 @@ body {
   height: 40px;
   background-color:black;
   background-image: url("../img/blue-vortex.png");
+}
+
+.lava{
+  width: 40px;
+  height: 40px;
+  background-color:rgb(99, 7, 7);
+
 }
 
 .player {
@@ -97,6 +105,7 @@ h1{
 }
 
 #chronometer-container {
+  display: none;
   position: absolute;
   top: 20px;
   left: 20px;
@@ -105,7 +114,6 @@ h1{
   font-size: 24px;
   padding: 10px 20px;
   border-radius: 10px;
-  display: flex;
   align-items: center;
   gap: 10px;
   z-index: 999;
@@ -117,3 +125,33 @@ h1{
   cursor: pointer;
 }
 
+#resume{
+  position: fixed;              /* reste en place même au scroll */
+  top: 0;
+  left: 0;
+  width: 100vw;                 /* prend toute la largeur */
+  height: 100vh;                /* prend toute la hauteur */
+  background-color: rgba(0, 0, 0, 0.9);  /* fond semi-transparent */
+  display: flex;                /* centrer le contenu */
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999;                /* devant tout */
+  color: white;
+  text-align: center;
+  /*visibility: hidden;*/
+}
+
+#buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+  
+}
+
+a{
+  color: white;
+  text-decoration: none;
+}
