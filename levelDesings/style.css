@@ -35,42 +35,42 @@ body {
   width: 40px;
   height: 40px;
   background-color:rgb(255, 0, 0);
-  background-image: url("/img/grass.png");
+  background-image: url("../img/grass.png");
 }
 
 .start{
   width: 40px;
   height: 40px;
   background-color:rgb(73, 49, 26);
-  background-image: url("/img/blue-vortex.png");
+  background-image: url("../img/blue-vortex.png");
 }
 
 .end{
   width: 40px;
   height: 40px;
   background-color:black;
-  background-image: url("/img/blue-vortex.png");
+  background-image: url("../img/blue-vortex.png");
 }
 
 .player {
-  background-image: url("/img/cube.png");
+  background-image: url("../img/cube.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .player.rotate-2 {
-  background-image: url("/img/cube-right.png");
+  background-image: url("../img/cube-right.png");
   transform: rotate(90deg);
   transition: transform 0s;
 }
 .player.rotate-3 {
-  background-image: url("/img/cube-blurp.png");
+  background-image: url("../img/cube-blurp.png");
   transform: rotate(180deg);
   transition: transform 0s;
 }
 .player.rotate-4 {
-  background-image: url("/img/cube-left.png");
+  background-image: url("../img/cube-left.png");
   transform: rotate(270deg);
   transition: transform 0s;
 }
