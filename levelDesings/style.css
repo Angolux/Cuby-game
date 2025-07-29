@@ -159,3 +159,14 @@ a{
   color: white;
   text-decoration: none;
 }
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgb(255, 238, 0); }
+  50% { box-shadow: 0 0 20px rgb(255, 238, 0); }
+  100% { box-shadow: 0 0 5px rgb(255, 238, 0); }
+}
+
+.effect {
+  animation: glow 0.5s infinite;
+  border: 2px solid rgb(255, 238, 0);
+}

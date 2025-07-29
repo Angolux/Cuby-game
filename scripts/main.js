@@ -32,6 +32,9 @@ const removePlayer = () => {
         }
 }
 const update = (rotation) => {
+    if(playerX === 17 && playerY === 24){
+        triggerEffect();
+    }    
     if(playerX === 49 && playerY === 24){
         stopTimer();
         finish = true;
@@ -187,11 +190,19 @@ const getRank = (min,sec) =>{
         return "S";
     }else if(min == 0){
         return "A";
-    } else if(min == 1 && sec < 30) {
+    } else if(min == 1) {
         return "B";
     } if(min == 2){
         return "C";
     } else {
         return "D";
     }
+}
+
+const triggerEffect = () => {
+    const cell = cells[playerY][playerX];
+    cell.classList.add("effect");
+    setTimeout(() => {
+        cell.classList.remove("effect");
+    }, 1000);
 }
