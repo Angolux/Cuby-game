@@ -16,24 +16,43 @@ let dead = false;
 const moveDelay = 100;
 const jumpDelay = 300;
 const fallDelay = 50;
+const loseDelay = 1000;
 
 const getCellColor = (x,y) => {
     const cell = cells[y][x];
     const style = window.getComputedStyle(cell);
     return style.backgroundColor;
 }
-
-const update = (rotation) => {
-    if(playerX === 49 && playerY === 24){
-        stopTimer();
-    }
-    const currentColor = getCellColor(playerX, playerY);
-    if(currentColor !== "rgb(255, 0, 0)"){
-        for (let y = 0; y < size; y++) {
+const removePlayer = () => {
+    for (let y = 0; y < size; y++) {
             for (let x = 0; x < size; x++) {
                 cells[y][x].classList.remove("player");
             }
         }
+}
+const update = (rotation) => {
+    if(playerX === 49 && playerY === 24){
+        stopTimer();
+        finish = true;
+        removePlayer();
+    }
+    const currentColor = getCellColor(playerX, playerY);
+    if(currentColor == "rgb(99, 7, 7)"){
+        stopTimer();
+        dead = true;
+        removePlayer();
+        cells[playerY][playerX].classList.add("player", "dead");
+        setTimeout(() => {
+            const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
+            const secs = String(seconds % 60).padStart(2, "0");
+            document.getElementById("result").textContent += "YOU LOSE !";
+            document.getElementById("time").textContent += `${mins}:${secs}`;
+            document.getElementById("rank").textContent += "D";
+            endGame();
+        }, loseDelay);
+    }
+    else if(currentColor !== "rgb(255, 0, 0)"){
+        removePlayer();
         if(rotation === 1){
             cells[playerY][playerX].classList.add("player");
         }
@@ -58,59 +77,61 @@ const update = (rotation) => {
 
 
 document.addEventListener("keydown", function (e) {
-    const key = e.key.toLowerCase();
-    if(!go){
-        go = true;
-        startTimer();
-        document.getElementById("chronometer-container").style.display = "flex";
-    }
-    if (key === "z" && playerY > 0 && !isJumping) {
-        const aboveColor = getCellColor(playerX, playerY - 1);
-        if (aboveColor !== "rgb(255, 0, 0)") {
-            isJumping = true;
-            playerY--;
-            update(rotation);
-
-            setTimeout(() => {
-                const aboveColor = getCellColor(playerX, playerY + 1);
-                if (aboveColor !== "rgb(255, 0, 0)") {
-                    playerY++;
-                }
+    if(!dead){
+        const key = e.key.toLowerCase();
+        if(!go){
+            go = true;
+            startTimer();
+            document.getElementById("chronometer-container").style.display = "flex";
+        }
+        if (key === "z" && playerY > 0 && !isJumping) {
+            const aboveColor = getCellColor(playerX, playerY - 1);
+            if (aboveColor !== "rgb(255, 0, 0)") {
+                isJumping = true;
+                playerY--;
                 update(rotation);
-                isJumping = false;
-            }, jumpDelay);
+
+                setTimeout(() => {
+                const aboveColor = getCellColor(playerX, playerY + 1);
+                    if (aboveColor !== "rgb(255, 0, 0)") {
+                        playerY++;
+                    }
+                    update(rotation);
+                    isJumping = false;
+                }, jumpDelay);
+            }
+            return;
         }
-        return;
+        if (!canMove) return;
+        canMove = false;
+
+        if (key === "s" && playerY < size - 1) {
+            const belowColor = getCellColor(playerX, playerY + 1);
+            if (belowColor !== "rgb(255, 0, 0)") {
+                playerY++;
+            }
+        } else if (key === "q" && playerX > 0) {
+            const leftColor = getCellColor(playerX - 1, playerY);
+            if (leftColor !== "rgb(255, 0, 0)") {
+                playerX--;
+                changeLeftRotation();
+                fall();
+            }
+        } else if (key === "d" && playerX < size - 1) {
+            const rightColor = getCellColor(playerX + 1, playerY);
+            if (rightColor !== "rgb(255, 0, 0)") {
+                playerX++;
+                changeRightRotation();
+                fall();
+            }
+        }
+
+        update(rotation);
+
+        setTimeout(() => {
+            canMove = true;
+        }, moveDelay);
     }
-    if (!canMove) return;
-    canMove = false;
-
-    if (key === "s" && playerY < size - 1) {
-        const belowColor = getCellColor(playerX, playerY + 1);
-        if (belowColor !== "rgb(255, 0, 0)") {
-            playerY++;
-        }
-    } else if (key === "q" && playerX > 0) {
-        const leftColor = getCellColor(playerX - 1, playerY);
-        if (leftColor !== "rgb(255, 0, 0)") {
-            playerX--;
-            changeLeftRotation();
-            fall();
-        }
-    } else if (key === "d" && playerX < size - 1) {
-        const rightColor = getCellColor(playerX + 1, playerY);
-        if (rightColor !== "rgb(255, 0, 0)") {
-            playerX++;
-            changeRightRotation();
-            fall();
-        }
-    }
-
-    update(rotation);
-
-    setTimeout(() => {
-        canMove = true;
-    }, moveDelay);
 });
 
 const fall = () => {
@@ -142,3 +163,7 @@ const changeLeftRotation = () => {
         rotation = 4
     }
 }
+
+const endGame = () => {
+    document.getElementById("resume").style.visibility = "visible";
+};

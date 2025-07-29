@@ -83,6 +83,10 @@ body {
   transition: transform 0s;
 }
 
+.player.dead{
+  background-image: url("../img/cube-dead.png");
+}
+
 #elements  a{
   text-decoration: none;
   color: white;
@@ -139,7 +143,7 @@ h1{
   z-index: 9999;                /* devant tout */
   color: white;
   text-align: center;
-  /*visibility: hidden;*/
+  visibility:hidden;
 }
 
 #buttons{
