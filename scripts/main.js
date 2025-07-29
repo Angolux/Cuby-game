@@ -15,7 +15,8 @@ let dead = false;
 
 const moveDelay = 100;
 const jumpDelay = 300;
-const fallDelay = 50;
+const fallDelay = 150;
+let fallBonus = 10;
 const loseDelay = 1000;
 
 const getCellColor = (x,y) => {
@@ -35,6 +36,15 @@ const update = (rotation) => {
         stopTimer();
         finish = true;
         removePlayer();
+        cells[playerY][playerX].classList.add("player");
+        setTimeout(() => {
+            const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
+            const secs = String(seconds % 60).padStart(2, "0");
+            document.getElementById("result").textContent += "YOU WIN !";
+            document.getElementById("time").textContent += `${mins}:${secs}`;
+            document.getElementById("rank").textContent += getRank(mins,secs);
+            endGame();
+        }, loseDelay);
     }
     const currentColor = getCellColor(playerX, playerY);
     if(currentColor == "rgb(99, 7, 7)"){
@@ -77,7 +87,7 @@ const update = (rotation) => {
 
 
 document.addEventListener("keydown", function (e) {
-    if(!dead){
+    if(!dead && !finish){
         const key = e.key.toLowerCase();
         if(!go){
             go = true;
@@ -115,14 +125,14 @@ document.addEventListener("keydown", function (e) {
             if (leftColor !== "rgb(255, 0, 0)") {
                 playerX--;
                 changeLeftRotation();
-                fall();
+                fall(fallBonus);
             }
         } else if (key === "d" && playerX < size - 1) {
             const rightColor = getCellColor(playerX + 1, playerY);
             if (rightColor !== "rgb(255, 0, 0)") {
                 playerX++;
                 changeRightRotation();
-                fall();
+                fall(fallBonus);
             }
         }
 
@@ -134,14 +144,18 @@ document.addEventListener("keydown", function (e) {
     }
 });
 
-const fall = () => {
+const fall = (fb) => {
+    console.log(fb);
     const nextColor = getCellColor(playerX, playerY + 1);
     if (nextColor !== "rgb(255, 0, 0)") {
         setTimeout(() => {
             playerY++;
             update(rotation);
-            fall();
-        }, fallDelay);
+            if(fb+7<149){
+                fb = fb + 7
+            }
+            fall(fb);
+        }, fallDelay - fb);
     }
 };
 
@@ -167,3 +181,17 @@ const changeLeftRotation = () => {
 const endGame = () => {
     document.getElementById("resume").style.visibility = "visible";
 };
+
+const getRank = (min,sec) =>{
+    if(min == 0 && sec < 30){
+        return "S";
+    }else if(min == 0){
+        return "A";
+    } else if(min == 1 && sec < 30) {
+        return "B";
+    } if(min == 2){
+        return "C";
+    } else {
+        return "D";
+    }
+}
