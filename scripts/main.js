@@ -12,12 +12,16 @@ let isJumping = false;
 let go = false;
 let finish = false;
 let dead = false;
+let inAnimation = false;
 
 const moveDelay = 100;
 const jumpDelay = 300;
 const fallDelay = 150;
+let stars = 0;
 let fallBonus = 10;
 const loseDelay = 1000;
+
+
 
 const getCellColor = (x,y) => {
     const cell = cells[y][x];
@@ -32,8 +36,12 @@ const removePlayer = () => {
         }
 }
 const update = (rotation) => {
-    if(playerX === 17 && playerY === 24){
+    cell = cells[playerY][playerX]
+    if(cell.classList.contains("star")){
+        stars = stars +1;
         triggerEffect();
+        cells[playerY][playerX].classList.remove("star");
+        cells[playerY][playerX].classList.add("cell");
     }    
     if(playerX === 49 && playerY === 24){
         stopTimer();
@@ -44,6 +52,7 @@ const update = (rotation) => {
             const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
             const secs = String(seconds % 60).padStart(2, "0");
             document.getElementById("result").textContent += "YOU WIN !";
+            document.getElementById("stars").textContent = `STARS : ${stars}/${nbStars}`;
             document.getElementById("time").textContent += `${mins}:${secs}`;
             document.getElementById("rank").textContent += getRank(mins,secs);
             endGame();
@@ -59,8 +68,9 @@ const update = (rotation) => {
             const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
             const secs = String(seconds % 60).padStart(2, "0");
             document.getElementById("result").textContent += "YOU LOSE !";
+            document.getElementById("stars").textContent = `STARS : ${stars}/${nbStars}`;
             document.getElementById("time").textContent += `${mins}:${secs}`;
-            document.getElementById("rank").textContent += "D";
+            document.getElementById("rank").textContent += "E";
             endGame();
         }, loseDelay);
     }
@@ -86,11 +96,12 @@ const update = (rotation) => {
     } else {
         playerY--;
     }
+    document.getElementById("starsTitle").textContent = `STARS : ${stars}/${nbStars}`;
 }
 
 
 document.addEventListener("keydown", function (e) {
-    if(!dead && !finish){
+    if(!dead && !finish && !inAnimation){
         const key = e.key.toLowerCase();
         if(!go){
             go = true;
@@ -202,7 +213,11 @@ const getRank = (min,sec) =>{
 const triggerEffect = () => {
     const cell = cells[playerY][playerX];
     cell.classList.add("effect");
+    inAnimation = true;
     setTimeout(() => {
         cell.classList.remove("effect");
+        inAnimation = false
     }, 1000);
+    
 }
+

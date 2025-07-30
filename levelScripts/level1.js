@@ -1,3 +1,5 @@
+const nbStars = 1;
+
 const startGame = () => {
     for (let y = 0; y < size; y++) {
     const line = [];
@@ -9,6 +11,8 @@ const startGame = () => {
                 cell.classList.add("end");
             } else if(y===25 && x===12){
                 cell.classList.add("cell");
+            } else if(y==24 && x==17){
+                cell.classList.add("cell","star");
             }
             else if (y === 25 || (y === 24 && x!=0 && x%5==0) || (y === 24 && x == 6) || (y === 23 && x == 6) || (y === 24 && x == 7) || (y === 23 && x == 7) || (y === 22 && x == 7)) {
                 cell.classList.add("ground");
