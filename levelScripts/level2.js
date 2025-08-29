@@ -1,3 +1,5 @@
+const nbStars = 1;
+
 const startGame = () => {
     for (let y = 0; y < size; y++) {
     const line = [];
@@ -20,6 +22,9 @@ const startGame = () => {
     }
     cells[playerY][playerX].classList.add("player");
 }
+
 startGame();
+
+
 update(rotation);
 

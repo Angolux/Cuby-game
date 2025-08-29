@@ -96,6 +96,13 @@ body {
   background-image: url("../img/cube-dead.png");
 }
 
+.enemy {
+  background-image: url("../img/bots.png"); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 #elements  a{
   text-decoration: none;
   color: white;

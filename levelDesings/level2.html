@@ -2,13 +2,32 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>CUBY-GAME/level1</title>
+    <title>CUBY-GAME/level2</title>
+    <link rel="icon" href="img/cube.png" />
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>LEVEL 2</h1>
+    <div id="resume">
+        <h1 id="result">RESULT : </h1>
+        <h2 id="stars">STARS : </h2>
+        <h2 id="time">TIME : </h2>
+        <h2 id="rank">RANK : </h2>
+        <div id="buttons">
+            <a href="" onclick="location.reload(); return false;"><h2>RESTART</h2></a>
+            <a href="level2.html"><h2>NEXT LEVEL</h2></a>
+            <a href="../index.html"><h2>QUIT LEVEL</h2></a>
+        </div>
+    </div>
+    <div id="left">
+        <h1>LEVEL 2</h1>
+        <h2 id="starsTitle"></h2>
+    </div>
     <div id="viewport">
         <div id="game"></div>
+    </div>
+    <div id="chronometer-container">
+        <p> <strong>TIME</strong> </p>
+        <span id="chronometer">00:00</span>
     </div>
     <section id="elements">
         <a href="level1.html"><h2>PREV LEVEL</h2></a>

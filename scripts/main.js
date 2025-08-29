@@ -16,11 +16,16 @@ let inAnimation = false;
 
 const moveDelay = 100;
 const jumpDelay = 300;
-const fallDelay = 150;
+const fallDelay = 200;
 let stars = 0;
 let fallBonus = 10;
 const loseDelay = 1000;
 
+let enemyX = 10;       // position initiale X (par exemple)
+let enemyY = 24;       // position Y fixe (par exemple sur la même ligne que le joueur)
+let enemyDirection = 1; // 1 = déplacement vers la droite, -1 vers la gauche
+let enemySteps = 0;    // compteur de déplacements dans une direction
+const enemyMaxSteps = 3; // nombre de cases max dans une direction
 
 
 const getCellColor = (x,y) => {
@@ -31,23 +36,26 @@ const getCellColor = (x,y) => {
 const removePlayer = () => {
     for (let y = 0; y < size; y++) {
             for (let x = 0; x < size; x++) {
-                cells[y][x].classList.remove("player");
+                cells[y][x].classList.remove("player","enemy");
             }
         }
 }
 const update = (rotation) => {
+    cells[enemyY][enemyX].classList.add("enemy");
     cell = cells[playerY][playerX]
     if(cell.classList.contains("star")){
         stars = stars +1;
         triggerEffect();
         cells[playerY][playerX].classList.remove("star");
         cells[playerY][playerX].classList.add("cell");
-    }    
+    }
     if(playerX === 49 && playerY === 24){
+        clearInterval(enemyMoveInterval);
         stopTimer();
         finish = true;
         removePlayer();
         cells[playerY][playerX].classList.add("player");
+        cells[enemyY][enemyX].classList.add("enemy");
         setTimeout(() => {
             const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
             const secs = String(seconds % 60).padStart(2, "0");
@@ -60,10 +68,12 @@ const update = (rotation) => {
     }
     const currentColor = getCellColor(playerX, playerY);
     if(currentColor == "rgb(99, 7, 7)"){
+        clearInterval(enemyMoveInterval);
         stopTimer();
         dead = true;
         removePlayer();
         cells[playerY][playerX].classList.add("player", "dead");
+        cells[enemyY][enemyX].classList.add("enemy");
         setTimeout(() => {
             const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
             const secs = String(seconds % 60).padStart(2, "0");
@@ -76,6 +86,7 @@ const update = (rotation) => {
     }
     else if(currentColor !== "rgb(255, 0, 0)"){
         removePlayer();
+        cells[enemyY][enemyX].classList.add("enemy");
         if(rotation === 1){
             cells[playerY][playerX].classList.add("player");
         }
@@ -113,12 +124,14 @@ document.addEventListener("keydown", function (e) {
             if (aboveColor !== "rgb(255, 0, 0)") {
                 isJumping = true;
                 playerY--;
+                playerY--;
                 update(rotation);
 
                 setTimeout(() => {
                 const aboveColor = getCellColor(playerX, playerY + 1);
                     if (aboveColor !== "rgb(255, 0, 0)") {
-                        playerY++;
+                        playerY+=2;
+                        
                     }
                     update(rotation);
                     isJumping = false;
@@ -169,7 +182,7 @@ const fall = (fb) => {
                 fb = fb + 7
             }
             fall(fb);
-        }, fallDelay - fb);
+        }, fallDelay-fb);
     }
 };
 
@@ -217,7 +230,35 @@ const triggerEffect = () => {
     setTimeout(() => {
         cell.classList.remove("effect");
         inAnimation = false
-    }, 1000);
+    }, 500);
     
 }
+
+function moveEnemy() {
+    // Avance ou recule selon enemyDirection
+    enemyX += enemyDirection;
+    enemySteps++;
+
+    // Si on a fait 3 pas dans cette direction, on inverse
+    if (enemySteps >= enemyMaxSteps) {
+        enemyDirection *= -1; // inverse la direction
+        enemySteps = 0;
+    }
+
+    // Garde l’ennemi dans la grille (optionnel)
+    if (enemyX < 0) {
+        enemyX = 0;
+        enemyDirection = 1;
+        enemySteps = 0;
+    } else if (enemyX >= size) {
+        enemyX = size - 1;
+        enemyDirection = -1;
+        enemySteps = 0;
+    }
+
+    // Mise à jour visuelle
+    update(rotation);
+}
+
+const enemyMoveInterval = setInterval(moveEnemy, 1000); // déplace l’ennemi toutes les secondes
 
